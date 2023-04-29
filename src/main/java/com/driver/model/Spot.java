@@ -1,26 +1,28 @@
 package com.driver.model;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import org.hibernate.annotations.ManyToAny;import javax.persistence.*;import java.util.ArrayList;import java.util.List;
 
 @Entity
-@Table(name = "spot")
-public class Spot {
+public class Spot
+{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Enumerated(EnumType.STRING)
+
     private SpotType spotType;
+
     private int pricePerHour;
-    private boolean occupied = false;
 
-    public Spot() {}
+    private boolean occupied;
 
-    public Spot(SpotType spotType, int pricePerHour) {
+    public Spot(int id, SpotType spotType, int pricePerHour, boolean occupied) {
+        this.id = id;
         this.spotType = spotType;
         this.pricePerHour = pricePerHour;
+        this.occupied = occupied;
     }
+
+    public Spot() {}
 
     public int getId() {
         return id;
@@ -46,7 +48,7 @@ public class Spot {
         this.pricePerHour = pricePerHour;
     }
 
-    public boolean isOccupied() {
+    public boolean getOccupied() {
         return occupied;
     }
 
@@ -71,9 +73,13 @@ public class Spot {
     }
 
     @ManyToOne
-    @JoinColumn
-    private ParkingLot parkingLot;
+    @JoinColumn ParkingLot parkingLot;
 
     @OneToMany(mappedBy = "spot",cascade = CascadeType.ALL)
-    private List<Reservation> reservationList = new ArrayList<>();
+    List<Reservation> reservationList=new ArrayList<>();
+
+
+
+
+
 }
